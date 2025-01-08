@@ -121,9 +121,6 @@ def generate_report_with_background(selected_graphs, player_name, constants, pla
                     pdf.image(temp_image, x=x_offsets[i], y=60, w=135)  # Ajusté pour deux graphiques
                     os.remove(temp_image)
 
-        # Ajouter le tableau des données utilisées
-        add_data_table_to_pdf(pdf, player_data)
-
         pdf.output(temp_pdf_path)
         return temp_pdf_path
     except Exception as e:
