@@ -112,7 +112,7 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
             if constant is not None:
                 ax.axhline(y=constant, color="red", linestyle="--", label=f"U15 National")
         ax.set_title(f"{selected_graph} {player_name}")
-        ax.set_xlabel("Session")
+        ax.set_xlabel("Match")
         ax.set_ylabel("Valeur")
         ax.legend()
         return fig
