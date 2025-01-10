@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 def get_masculine_constants(constante_data):
     """Extrait les constantes spécifiques au pôle masculin à partir d'une feuille Excel."""
@@ -67,7 +68,7 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
                 fig, ax = plt.subplots(figsize=(10, 6))
 
                 # Barre "Constante U15"
-                bar1 = ax.bar("Constante U15", constant20, color="cyan")
+                bar1 = ax.bar("Constante U15", constant20, color="blue")
                 bar2 = ax.bar("Constante U15", constant16, bottom=constant20, color="orange")
                 bar3 = ax.bar("Constante U15", constant, bottom=constant20 + constant16, color="green")
 
@@ -77,9 +78,9 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
                     ax.text(rect.get_x() + rect.get_width() / 2.0, rect.get_y() + height / 2.0, f'{height:.1f}', ha='center', va='center')
 
                 # Barres pour chaque session
-                bar4 = ax.bar(sessions, distance20, label="Distance20%", color="cyan")
-                bar5 = ax.bar(sessions, distance16, bottom=distance20, label="Distance16%", color="orange")
-                bar6 = ax.bar(sessions, distance, bottom=distance20 + distance16, label="Distance%", color="green")
+                bar4 = ax.bar(sessions, distance20, label="Distance>20", color="cyan")
+                bar5 = ax.bar(sessions, distance16, bottom=distance20, label="Distance>16", color="orange")
+                bar6 = ax.bar(sessions, distance, bottom=distance20 + distance16, label="Distance<16", color="green")
 
                 # Ajouter des étiquettes pour les barres de sessions
                 for bar_set in (bar4, bar5, bar6):
@@ -87,7 +88,7 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
                         height = rect.get_height()
                         ax.text(rect.get_x() + rect.get_width() / 2.0, rect.get_y() + height / 2.0, f'{height:.1f}', ha='center', va='center')
 
-                ax.set_title("Répartition des distances de course en %")
+                ax.set_title("Répartition de courses en %")
                 ax.set_xlabel("Match")
                 ax.set_ylabel("Distance (%)")
                 ax.legend()
@@ -103,7 +104,18 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
         player_data[selected_graph] = player_data[selected_graph].fillna(0)
 
         fig, ax = plt.subplots(figsize=(8, 6))
-        ax.plot(player_data["Session Title"], player_data[selected_graph], marker="o", label=selected_graph)
+        ax.plot(player_data["Session Title"], player_data[selected_graph], marker="o",color="green", label=selected_graph)
+        # Préparation des données pour la régression
+        x = np.arange(len(player_data["Session Title"]))
+        y = player_data[selected_graph].values
+
+        # Calcul de la régression linéaire (pente et intercept)
+        slope, intercept = np.polyfit(x, y, 1)
+        regression_line = slope * x + intercept
+
+        # Tracer la droite de régression
+        ax.plot(player_data["Session Title"], regression_line, color="navy", linestyle="-", label="Progression général")
+
 
         position_row = positions[positions["Joueur"] == player_name]
         if not position_row.empty:
@@ -112,7 +124,7 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
             if constant is not None:
                 ax.axhline(y=constant, color="red", linestyle="--", label=f"U15 National")
         ax.set_title(f"{selected_graph} {player_name}")
-        ax.set_xlabel("Match")
+        ax.set_xlabel("Session")
         ax.set_ylabel("Valeur")
         ax.legend()
         return fig
