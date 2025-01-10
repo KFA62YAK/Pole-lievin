@@ -115,7 +115,6 @@ def plot_feminine_graph(selected_graph, player_name, constants, data, positions)
         # Tracer la droite de régression
         ax.plot(player_data["Session Title"], regression_line, color="navy", linestyle="-", label="Progression général")
 
-
         position_row = positions[positions["Joueur"] == player_name]
         if not position_row.empty:
             position = position_row.iloc[0]["Poste"]
