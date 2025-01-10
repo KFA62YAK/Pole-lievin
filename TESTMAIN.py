@@ -117,6 +117,7 @@ def generate_report_with_background(selected_graphs, player_name, constants, pla
 
                 if fig:
                     temp_image = tempfile.NamedTemporaryFile(delete=False, suffix=".png").name
+                    fig.autofmt_xdate ()
                     fig.savefig(temp_image, bbox_inches="tight")
                     pdf.image(temp_image, x=x_offsets[i], y=60, w=135)  # Ajusté pour deux graphiques
                     os.remove(temp_image)
@@ -137,6 +138,7 @@ def display_selected_graphs(selected_graphs, player_name, constants, player_data
             fig = plot_masculine_graph(graph, player_name, constants, player_data, positions)
 
         if fig:
+            fig.autofmt_xdate ()
             st.pyplot(fig)
         else:
             st.error(f"Graphique {graph} non disponible.")
