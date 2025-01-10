@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 def get_feminine_constants(constante_data):
     """Extrait les constantes spécifiques au pôle masculin à partir d'une feuille Excel."""
