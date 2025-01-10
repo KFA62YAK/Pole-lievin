@@ -103,16 +103,27 @@ def plot_feminine_graph(selected_graph, player_name, constants, data, positions)
         player_data[selected_graph] = player_data[selected_graph].fillna(0)
 
         fig, ax = plt.subplots(figsize=(8, 6))
-        ax.plot(player_data["Session Title"], player_data[selected_graph], marker="o", label=selected_graph)
+        ax.plot(player_data["Session Title"], player_data[selected_graph], marker="o",color="green", label=selected_graph)
+        # Préparation des données pour la régression
+        x = np.arange(len(player_data["Session Title"]))
+        y = player_data[selected_graph].values
+
+        # Calcul de la régression linéaire (pente et intercept)
+        slope, intercept = np.polyfit(x, y, 1)
+        regression_line = slope * x + intercept
+
+        # Tracer la droite de régression
+        ax.plot(player_data["Session Title"], regression_line, color="navy", linestyle="-", label="Progression général")
+
 
         position_row = positions[positions["Joueur"] == player_name]
         if not position_row.empty:
             position = position_row.iloc[0]["Poste"]
             constant = constants.get(selected_graph, {}).get(position)
             if constant is not None:
-                ax.axhline(y=constant, color="red", linestyle="--", label=f"U17 National ")
+                ax.axhline(y=constant, color="red", linestyle="--", label=f"U15 National")
         ax.set_title(f"{selected_graph} {player_name}")
-        ax.set_xlabel("Match")
+        ax.set_xlabel("Session")
         ax.set_ylabel("Valeur")
         ax.legend()
         return fig
