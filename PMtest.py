@@ -114,7 +114,7 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
         regression_line = slope * x + intercept
 
         # Tracer la droite de régression
-        ax.plot(player_data["Session Title"], regression_line, color="navy", linestyle="-", label="Progression général")
+        ax.plot(player_data["Session Title"], regression_line, color="navy", linestyle="-", label="Progression générale")
 
 
         position_row = positions[positions["Joueur"] == player_name]
