@@ -68,7 +68,7 @@ def plot_masculine_graph(selected_graph, player_name, constants, data, positions
                 fig, ax = plt.subplots(figsize=(10, 6))
 
                 # Barre "Constante U15"
-                bar1 = ax.bar("Constante U15", constant20, color="blue")
+                bar1 = ax.bar("Constante U15", constant20, color="cyan")
                 bar2 = ax.bar("Constante U15", constant16, bottom=constant20, color="orange")
                 bar3 = ax.bar("Constante U15", constant, bottom=constant20 + constant16, color="green")
 
